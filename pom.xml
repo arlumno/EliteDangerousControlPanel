@@ -11,6 +11,11 @@
             <artifactId>PanamaHitek_Arduino</artifactId>
             <version>3.2.0</version>
         </dependency>
+        <dependency>
+            <groupId>libreriamenu</groupId>
+            <artifactId>libreriaAr1.4</artifactId>
+            <version>1.4</version>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>

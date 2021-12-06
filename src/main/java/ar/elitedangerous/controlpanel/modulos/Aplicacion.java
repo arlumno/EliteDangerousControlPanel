@@ -12,76 +12,79 @@ import java.util.HashMap;
  * @author Ar
  */
 public class Aplicacion {
-    EDPanel panel = new EDPanel(this);
+
+    GuiPanel panel = new GuiPanel(this);
     Conector conector = new Conector();
     Status status = new Status(this);
-    
-    public Aplicacion(){
-             status.start();                
-        //ventana.inConsola("Luces Encendidas");
-//        panel.inConsola("Luces Apagadas");
-        
-       
+
+    public Aplicacion() {
+        status.start();
+        //ventana.toConsola("Luces Encendidas");
+//        panel.toConsola("Luces Apagadas");
+
 //        status.start();
 //           status.actualizar();
 //               Status.test();
-        
         /*
         while (true) {
             try {                
                 if (status.status.get("LightsOn")) {
                     //   conector.ino.sendData("4");                                
-                    panel.inConsola("Luces Encendidas");
+                    panel.toConsola("Luces Encendidas");
                     conector.ino.sendData("Luces Encendidas");
                 } else {
                     conector.ino.sendData("Luces APAGADAS");
-                    panel.inConsola("Luces APAGADAS");
+                    panel.toConsola("Luces APAGADAS");
                     //  conector.ino.sendData("sin datos\n");                                
                 }
 //                System.out.println("enviando:");
 //                conector.ino.sendData("1");            
 //                conector.ino.sendData("4");            
             } catch (Exception e) {                
-                panel.inConsola("Error: " + e.toString());
+                panel.toConsola("Error: " + e.toString());
                 System.out.println("Error: " + e.toString());
             }
             try{
                 Thread.sleep(1000);
             }catch(Exception e){                
-               panel.inConsola("Error: " + e.toString());
+               panel.toConsola("Error: " + e.toString());
                 System.out.println("Error: " + e.toString());
             }
         }
-      */
+         */
     }
-    public void conectar(){
-        try{
-            conector.conectar();            
-        }catch(Exception e){
-            panel.inConsola(e.toString());
+
+    public void conectar() {
+        try {
+            conector.conectar();
+        } catch (Exception e) {
+            panel.toConsola(e.toString());
         }
-    }  
-    public void status(){
-        try{         
-            if(status.isAnalizar()){
-                status.parar();                
-                panel.inConsola("status stop");
-            }else{
-                status.continuar();                
-                panel.inConsola("status start");
+    }
+
+    public void status() {
+        try {
+            if (status.isAnalizar()) {
+                status.parar();
+                panel.toConsola("status stop");
+            } else {
+                status.continuar();
+                panel.toConsola("status start");
             }
-           // status.actualizar();
-        }catch(Exception e){
-            panel.inConsola(e.toString());
+        } catch (Exception e) {
+            panel.toConsola("status() error: " + e.toString());
         }
     }
-     public HashMap<String, Boolean> getStatus(){
-         return status.getStatus();
-     }
-    public void inConsola(String texto){
-        panel.inConsola(texto);
+
+    public HashMap<String, Boolean> getStatus() {
+        return status.getStatus();
     }
-    public void cargarMonitor(){
-        panel.cargarMonitor();
+
+    public void toConsola(String texto) {
+        panel.toConsola(texto);
+    }
+
+    public void actualizarEstadosMonitor() {
+        panel.actualizarEstadosMonitor();
     }
 }

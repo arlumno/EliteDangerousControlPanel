@@ -13,46 +13,52 @@ import java.util.HashMap;
 import java.util.Map;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import peticiones.EntradasGui;
 
 public class Status extends Thread {
 
-//    private String rutaJson = "C:/Users/Ar/Saved Games/Frontier Developments/Elite Dangerous/Status.json";
-    //private String rutaJson = "C:/Users/Ar/Google Drive/CsDam Arlumno/PR/ed/Status.json";
-    //C:\Users\a20armandocb\A miña unidade\CsDam Arlumno\Varios\1º DAM\PR\ed
-    private String rutaJson = "C:/Users/a20armandocb/A miña unidade/CsDam Arlumno/Varios/1º DAM/PR/ed/Status.json";
+//    private String rutaJson = "C:/Users/Ar/Saved Games/Frontier Developments/Elite Dangerous/Status.json";    
+    //private String rutaJson = System.getenv("HOMEDRIVE")+System.getenv("HOMEPATH") + "/Saved Games/Frontier Developments/Elite Dangerous/Status.json";
+    private String rutaJson = "src/main/java/archivosDemo/Status.json";
     
+    
+    File archivoJson = new File(rutaJson);
     private JSONParser parser = new JSONParser();
     private HashMap<String, Boolean> status = new HashMap<String, Boolean>();
     private boolean analizar = false;
     private boolean actualizar = true;
     private final int DELAY = 100;
+    private final int FLAGS_BINARY_LENGTH = 27; //27 to basic game, 31 to Odyssey
     private long longFlags = 0;
     private Aplicacion aplicacion;
 
     public Status(Aplicacion aplicacion) {
         this.aplicacion = aplicacion;
+        
+        System.out.println(archivoJson.getAbsoluteFile());
+        if (!archivoJson.exists()) {
+            System.out.println("---- El archivo no existe. ----");
+            //archivoJson = EntradasGui.pedirArchivo();
+        }
+
         status.put("LightsOn", false);
     }
 
     public void run() {
         long aux;
         actualizar(); //primera actualización
-//        ventana.inConsola("en run.. ");
         while (true) {
             try {
                 sleep(DELAY);
-                //ventana.inConsola("analiz: "+ isAnalizar());
                 while (isAnalizar()) {
-//                    ventana.inConsola("analizando.. ");
                     sleep(DELAY);
-                    if (longFlags != (aux = getLongFlags())) {
-                        //aplicacion.inConsola(longFlags + " = " + aux);
+                    if (longFlags != (aux = getLongFlagsFromJson())) {
                         longFlags = aux;
                         actualizar();
                     }
                 }
             } catch (Exception e) {
-                aplicacion.inConsola("Error 01: " + e.toString());
+                aplicacion.toConsola("Error 01: " + e.toString());
             }
         }
     }
@@ -60,10 +66,10 @@ public class Status extends Thread {
     public void parar() {
         setAnalizar(false);
     }
-
+    
     public void continuar() {
         setAnalizar(true);
-        aplicacion.inConsola("continuar.. " + isAnalizar());
+        aplicacion.toConsola("continuar.. " + isAnalizar());
 
     }
 
@@ -71,8 +77,8 @@ public class Status extends Thread {
         if (longFlags != -1) {
             StringBuilder flags = new StringBuilder(Long.toBinaryString(longFlags));
             flags = flags.reverse();
-            if (flags.length() < 27) {
-                for (int i = flags.length(); i < 27; i++) {
+            if (flags.length() < FLAGS_BINARY_LENGTH) {
+                for (int i = flags.length(); i < FLAGS_BINARY_LENGTH ;i++) {
                     flags.append("0");
                 }
             }
@@ -106,7 +112,14 @@ public class Status extends Thread {
             24 16777216 0100 0000 In MainShip
             25 33554432 0200 0000 In Fighter
             26 67108864 0400 0000 In SRV
+            // Odyssey expansion:
+            27 134217728 0800 0000 Hud in Analysis mode
+            28 268435456 1000 0000 Night Vision
+            29 536870912 2000 0000 Altitude from Average radius
+            30 1073741824 4000 0000 fsdJump
+            31 2147483648 8000 0000 srvHighBeam
              */
+            
             getStatus().clear();
             getStatus().put("Docked", (flags.charAt(0) == '1'));
             getStatus().put("Landed", (flags.charAt(1) == '1'));
@@ -135,11 +148,9 @@ public class Status extends Thread {
             getStatus().put("InFighter", (flags.charAt(25) == '1'));
             getStatus().put("InSRV", (flags.charAt(26) == '1'));
 
-//            aplicacion.inConsola(mostrarStatus());
-            //ventana.inConsola(listarBinario(flags));
-            aplicacion.cargarMonitor();
+            aplicacion.actualizarEstadosMonitor();
         } else {
-            aplicacion.inConsola("No hay flags disponibles");
+            aplicacion.toConsola("No hay flags disponibles");
         }
     }
 
@@ -147,29 +158,29 @@ public class Status extends Thread {
         String resultado = "";
         for (String flag : getStatus().keySet()) {
             if (getStatus().get(flag)) {
-                resultado += flag + ": " + getStatus().get(flag) + "\n";
+                resultado += flag + ": " + getStatus().get(flag) + "/n";
             }
         }
         return resultado;
     }
 
-    private long getLongFlags() {
+    private long getLongFlagsFromJson() {
         JSONObject json = new JSONObject();
         long resultado = -1;
 
         File archivo = new File(rutaJson);
-        try (BufferedReader bf = new BufferedReader(new FileReader(archivo))) {
+        try ( BufferedReader bf = new BufferedReader(new FileReader(archivo))) {
 //            if (archivo.exists() && archivo.isFile()) {
 //            json = (JSONObject) parser.parse(new FileReader(archivo));
             try {
                 json = (JSONObject) parser.parse(bf);
                 resultado = (long) json.get("Flags");
             } catch (Exception e) {
-                aplicacion.inConsola("Error Json: " + bf.toString());
-                aplicacion.inConsola("Error Json: " + e.getClass() + " " + e.toString());
+                aplicacion.toConsola("Error Json: " + e.getClass() + " " + e.toString());
+                aplicacion.toConsola("  ----  " + bf.toString());
             }
         } catch (Exception e) {
-            aplicacion.inConsola("Error al leer el archivo: " + e.getClass() + " " + e.toString());
+            aplicacion.toConsola("Error al leer el archivo: " + e.getClass() + " " + e.toString());
         }
         return resultado;
     }
@@ -177,7 +188,7 @@ public class Status extends Thread {
     public static String listarBinario(String binario) {
         StringBuilder texto = new StringBuilder();
         for (int i = 0; i < binario.length(); i++) {
-            texto.append("i " + i + " = " + binario.charAt((binario.length() - i - 1)) + "\n");
+            texto.append("i " + i + " = " + binario.charAt((binario.length() - i - 1)) + "/n");
         }
 
         return texto.toString();

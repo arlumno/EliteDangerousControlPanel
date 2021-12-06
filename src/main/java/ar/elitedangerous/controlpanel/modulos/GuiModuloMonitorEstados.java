@@ -16,7 +16,7 @@ import java.util.HashMap;
  *
  * @author Ar
  */
-public class Monitor extends Canvas {
+public class GuiModuloMonitorEstados extends Canvas {
     HashMap<String, Boolean> estados = new HashMap<String, Boolean>();
     
     public void setEstados(HashMap<String, Boolean> estados){

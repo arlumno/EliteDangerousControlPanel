@@ -14,14 +14,14 @@ import java.util.HashMap;
  *
  * @author Ar
  */
-public class EDPanel extends javax.swing.JFrame {
+public class GuiPanel extends javax.swing.JFrame {
     Aplicacion aplicacion;
     boolean statusAnalizar;
     boolean conectado;
     /**
      * Creates new form Ventana
      */
-    public EDPanel(Aplicacion aplicacion) {
+    public GuiPanel(Aplicacion aplicacion) {
         this.aplicacion = aplicacion;
         initComponents();
         getContentPane().setBackground(java.awt.Color.darkGray);
@@ -44,7 +44,7 @@ public class EDPanel extends javax.swing.JFrame {
         EDPConsole = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        monitor = new ar.elitedangerous.controlpanel.modulos.Monitor();
+        monitor = new ar.elitedangerous.controlpanel.modulos.GuiModuloMonitorEstados();
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -66,11 +66,10 @@ public class EDPanel extends javax.swing.JFrame {
         EDPConsole.setEditable(false);
         EDPConsole.setBackground(java.awt.Color.gray);
         EDPConsole.setColumns(20);
-        EDPConsole.setForeground(java.awt.Color.black);
         EDPConsole.setRows(5);
         jScrollPane1.setViewportView(EDPConsole);
 
-        jButton1.setBackground(java.awt.Color.gray);
+        jButton1.setBackground(java.awt.Color.lightGray);
         jButton1.setText("Conectar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,7 +77,7 @@ public class EDPanel extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setBackground(java.awt.Color.gray);
+        jButton2.setBackground(java.awt.Color.lightGray);
         jButton2.setText("Status");
         jButton2.setToolTipText("");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -89,7 +88,7 @@ public class EDPanel extends javax.swing.JFrame {
 
         monitor.setName("monitor"); // NOI18N
 
-        jButton3.setText("jButton3");
+        jButton3.setText("Comprobar Status");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -112,27 +111,27 @@ public class EDPanel extends javax.swing.JFrame {
                     .addGroup(ventanaLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addComponent(monitor, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         ventanaLayout.setVerticalGroup(
             ventanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ventanaLayout.createSequentialGroup()
-                .addGroup(ventanaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ventanaLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(monitor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26))
+            .addGroup(ventanaLayout.createSequentialGroup()
+                .addComponent(monitor, javax.swing.GroupLayout.PREFERRED_SIZE, 742, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         monitor.getAccessibleContext().setAccessibleName("monitor");
@@ -151,7 +150,7 @@ public class EDPanel extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ventana, javax.swing.GroupLayout.PREFERRED_SIZE, 621, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ventana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -159,7 +158,7 @@ public class EDPanel extends javax.swing.JFrame {
 
         getAccessibleContext().setAccessibleDescription("");
 
-        setBounds(0, 0, 1044, 669);
+        setBounds(0, 0, 1044, 801);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -175,14 +174,14 @@ public class EDPanel extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        cargarMonitor();
+        actualizarEstadosMonitor();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    public void cargarMonitor(){
+    public void actualizarEstadosMonitor(){
         monitor.setEstados(aplicacion.getStatus());                
     }
     
-    public void inConsola(String texto){
+    public void toConsola(String texto){
         EDPConsole.setText(EDPConsole.getText() + texto +"\n" );        
     }    
     
@@ -193,7 +192,7 @@ public class EDPanel extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private ar.elitedangerous.controlpanel.modulos.Monitor monitor;
+    private ar.elitedangerous.controlpanel.modulos.GuiModuloMonitorEstados monitor;
     private javax.swing.JPanel ventana;
     // End of variables declaration//GEN-END:variables
 }
